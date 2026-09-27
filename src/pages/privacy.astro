@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { BRAND } from '../config/site.js'
+
+const title = `隐私说明 - ${BRAND}`
+const description = `说明${BRAND}如何处理你的照片：全程在手机本地完成，不上传服务器。`
+---
+
+<BaseLayout title={title} description={description} path="/privacy">
+  <div class="article-head">
+    <h1>隐私说明</h1>
+    <p class="article-meta">最后更新：2026 年</p>
+  </div>
+
+  <div class="prose">
+    <h2>照片不出手机</h2>
+    <p>
+      「{BRAND}」的核心设计原则是：<strong>照片文件的处理全程在您的手机本地完成，
+      小程序不会将照片上传至服务器。</strong>
+    </p>
+    <p>具体来说：</p>
+    <ul>
+      <li>证件照的裁剪、压缩、背景替换，全部在手机本地用 Canvas 处理。</li>
+      <li>材料照片的边缘识别、透视矫正、拼页、PDF 合成，也全部在本地完成。</li>
+      <li>处理后的照片保存在你的手机相册，不会经过我们的服务器。</li>
+    </ul>
+
+    <h2>哪些信息会上传</h2>
+    <p>仅以下非照片类信息会经由微信云开发保存：</p>
+    <ul>
+      <li><strong>支付订单信息</strong>：用于材料打包功能的付费凭证，不含任何照片。</li>
+      <li><strong>使用统计数据</strong>：匿名的功能使用次数，用于改进产品，不含个人身份信息。</li>
+    </ul>
+
+    <h2>为什么这么做</h2>
+    <p>
+      报名材料包含身份证、户口本等敏感个人信息。我们认为，<strong>处理这些文件最安全的方式就是不让它们离开你的手机</strong>。
+      即使服务器被攻破，也拿不到你的照片——因为我们压根没存。
+    </p>
+
+    <h2>联系我们</h2>
+    <p>
+      如对隐私政策有疑问，请通过《<a href="/about">关于</a>》页面的联系方式与我们取得联系。
+    </p>
+  </div>
+</BaseLayout>

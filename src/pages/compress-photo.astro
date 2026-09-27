@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import FaqSection from '../components/FaqSection.astro'
+import HowToJsonLd from '../components/HowToJsonLd.astro'
+import { BRAND, ID_PHOTO_SPEC } from '../config/site.js'
+
+const { minKB, maxKB, targetKB, minPxW, minPxH } = ID_PHOTO_SPEC
+
+const title = `照片怎么压缩到${maxKB}KB以内：手机可用的4种办法`
+const description = `报名照片超过${maxKB}KB传不上去？整理4种在手机上把照片压到${minKB}-${maxKB}KB的方法，并说明哪种最省事、哪种画质损失最小。`
+
+const howToSteps = [
+  '方法一：用微信或QQ发送照片，系统会自动压缩。省事但画质不可控，且像素可能变小导致不达标。',
+  '方法二：用手机相册自带的「调整大小」功能（部分机型有），可手动调分辨率或体积。',
+  '方法三：截图裁掉多余部分。会降低清晰度，且像素可能跌破官方下限，不推荐用于报名照。',
+  `方法四：用「${BRAND}」小程序，固定输出像素、只调 JPEG 质量，能同时守住像素下限和体积上限。`
+]
+
+const faqs = [
+  {
+    q: `为什么不推荐直接把照片缩小来压到 ${maxKB}KB 以内？`,
+    a: `因为报名系统同时要求像素下限（宽 >${minPxW}、高 >${minPxH}）。把图缩小虽然体积小了，但像素会跌破下限，照样不达标。正确做法是<strong>固定像素、调节 JPEG 质量</strong>。`
+  },
+  {
+    q: 'JPEG 质量调到多少合适？',
+    a: `没有固定值，取决于照片内容。一般从 0.75 开始试，太大就往下调。「${BRAND}」用二分法自动找「体积 ≤${maxKB}KB 的最高画质」，比手动反复试准。`
+  },
+  {
+    q: '微信发送后再存回来的照片，为什么经常不能用？',
+    a: '微信压缩会同时降低分辨率和画质，存回来的照片像素可能已经跌破官方下限，而且细节丢失后无法恢复。报名照不建议走这条路。'
+  },
+  {
+    q: `为什么建议输出 ${targetKB}KB 而不是贴着 ${maxKB}KB？`,
+    a: `因为「KB」有 1000 和 1024 两种口径，按 1024 算的 ${maxKB}KB 到了按 1000 算的系统里就超了。压到 ${targetKB}KB 左右留余量，不管哪种口径都达标。`
+  }
+]
+---
+
+<BaseLayout title={title} description={description} path="/compress-photo">
+  <HowToJsonLd name={`把照片压缩到 ${maxKB}KB 以内`} description={description} steps={howToSteps} />
+
+  <div class="article-head">
+    <h1>把照片压到 {maxKB}KB 以内的四种办法</h1>
+    <p class="article-meta">针对公务员考试报名照片（{minKB}–{maxKB}KB）整理</p>
+  </div>
+
+  <div class="prose">
+    <p>
+      报名照片传不上去，十有八九是因为超过 {maxKB}KB。网上搜「照片压缩」出来一堆在线工具，
+      但<strong>上传人脸照片到第三方服务器有隐私风险</strong>，而且很多工具压缩后像素不够、又不达标。
+      下面整理四种在手机上就能用的办法，并说明各自的优缺点。
+    </p>
+
+    <div class="callout">
+      <p class="callout-title">先记住一个反直觉的结论</p>
+      <p>
+        <strong>降分辨率不是好办法。</strong>报名系统同时要求像素下限（宽 >{minPxW}、高 >{minPxH}），
+        把图缩小虽然体积小了，但像素会不达标。<strong>正确做法是固定像素、调节 JPEG 质量</strong>——
+        这也是「{BRAND}」实际采用的技术路线。
+      </p>
+    </div>
+
+    <h2>方法一：微信 / QQ 发送时自动压缩</h2>
+    <p>
+      把照片发给「文件传输助手」或另一个号，再保存回来，微信会自动压缩。
+    </p>
+    <ul>
+      <li>✅ 优点：最省事，不用装任何工具。</li>
+      <li>❌ 缺点：画质不可控，而且<strong>像素会被降低</strong>，很可能跌破官方 >{minPxW}×>{minPxH} 的下限。</li>
+      <li>❌ 缺点：细节丢失后无法恢复，人脸可能变糊。</li>
+    </ul>
+    <p><strong>结论：不推荐用于报名照。</strong>日常发图可以，报名这种有硬指标的场景不行。</p>
+
+    <h2>方法二：手机相册自带的「调整大小」</h2>
+    <p>
+      部分安卓机型（如小米、华为）的相册编辑里有「调整大小」或「压缩」选项，iPhone 则需要通过「快捷指令」实现。
+    </p>
+    <ul>
+      <li>✅ 优点：本地处理，不上传。</li>
+      <li>❌ 缺点：大多只能调分辨率，不能只调 JPEG 质量；调小分辨率会跌破像素下限。</li>
+      <li>❌ 缺点：操作路径深，每次都要重来。</li>
+    </ul>
+    <p><strong>结论：能不用就不用，除非你能精确控制只调质量不调像素。</strong></p>
+
+    <h2>方法三：截图裁掉多余部分</h2>
+    <p>
+      有人把照片打开后截图，再裁掉白边，以为这样能变小。
+    </p>
+    <ul>
+      <li>✅ 优点：操作简单。</li>
+      <li>❌ 缺点：截图本身会降低清晰度；裁完像素往往不够；而且报名照的构图（头部比例）可能被破坏。</li>
+    </ul>
+    <p><strong>结论：不推荐。</strong>既损画质又可能不达标。</p>
+
+    <h2>方法四：专门的工具（推荐）</h2>
+    <p>
+      「{BRAND}」小程序做的是<strong>固定输出像素、只调 JPEG 质量</strong>的方式：
+    </p>
+    <ol class="steps">
+      <li>固定输出 {ID_PHOTO_SPEC.outPxW}×{ID_PHOTO_SPEC.outPxH}px（满足比例与像素下限）。</li>
+      <li>用二分法自动寻找「体积 ≤{maxKB}KB 的最高画质」，比手动试更准。</li>
+      <li>目标 {targetKB}KB 左右，留足安全余量，避免 1000/1024 口径问题。</li>
+      <li>全部在手机本地完成，照片不上传服务器。</li>
+    </ol>
+    <p>
+      这条路能同时守住「像素下限」和「体积上限」两个约束，是报名场景下最稳妥的做法。
+      详见《<a href="/jingkao-idphoto-spec">京考报名照片要求</a>》。
+    </p>
+
+    <h2>四种办法对比</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>能否守住像素下限</th>
+          <th>画质损失</th>
+          <th>隐私安全</th>
+          <th>推荐度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>微信/QQ 压缩</td><td>❌ 常跌破</td><td>大</td><td>经腾讯服务器</td><td>★☆☆☆☆</td></tr>
+        <tr><td>相册调整大小</td><td>⚠️ 看操作</td><td>中</td><td>本地</td><td>★★☆☆☆</td></tr>
+        <tr><td>截图裁剪</td><td>❌ 常跌破</td><td>大</td><td>本地</td><td>★☆☆☆☆</td></tr>
+        <tr><td>{BRAND} 小程序</td><td>✅ 固定 {ID_PHOTO_SPEC.outPxW}×{ID_PHOTO_SPEC.outPxH}</td><td>小（最高画质）</td><td>本地，不上传</td><td>★★★★★</td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      如果你需要处理的不只是证件照，还有多张材料照片要合成一个 PDF，
+      可以继续看《<a href="/photos-to-pdf">多张材料照片合成一个 PDF</a>》。
+    </p>
+  </div>
+
+  <FaqSection faqs={faqs} />
+</BaseLayout>

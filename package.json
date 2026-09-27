@@ -1,0 +1,16 @@
+{
+  "name": "报考材料夹-官网",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "报考材料夹 SEO 内容型官网，引流到微信小程序",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.16.0"
+  }
+}

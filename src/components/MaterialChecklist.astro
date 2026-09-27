@@ -1,0 +1,113 @@
+---
+/**
+ * MaterialChecklist.astro —— 可勾选的报名材料清单
+ * 数据与小程序 utils/templates.js 完全一致，用 localStorage 记住勾选状态。
+ */
+import { MATERIAL_TEMPLATES } from '../config/site.js'
+---
+
+<div class="checklist" id="material-checklist">
+  <div class="checklist-tabs">
+    {MATERIAL_TEMPLATES.map((t, i) => (
+      <button
+        class={`checklist-tab ${i === 0 ? 'active' : ''}`}
+        data-key={t.key}
+        type="button"
+      >
+        {t.name}
+      </button>
+    ))}
+  </div>
+
+  {MATERIAL_TEMPLATES.map((t, i) => (
+    <div
+      class="checklist-panel"
+      data-key={t.key}
+      style={`display:${i === 0 ? 'block' : 'none'}`}
+    >
+      <ul>
+        {t.items.map((item) => (
+          <li>
+            <input type="checkbox" id={`${t.key}-${item}`} data-item={item} />
+            <label for={`${t.key}-${item}`}>{item}</label>
+          </li>
+        ))}
+      </ul>
+      <p class="checklist-progress" data-progress>已勾选 0 / {t.items.length}</p>
+    </div>
+  ))}
+
+  <p style="font-size:12px;color:var(--color-text-soft);margin-top:1em">
+      勾选状态会自动保存在本浏览器，方便对照准备。以上为参考清单，报名要求请以官方公告为准。
+    </p>
+</div>
+
+<script>
+  const root = document.getElementById('material-checklist')
+  if (root) {
+    const tabs = root.querySelectorAll<HTMLButtonElement>('.checklist-tab')
+    const panels = root.querySelectorAll<HTMLElement>('.checklist-panel')
+    const STORAGE_KEY = 'material-checklist-state'
+
+    function loadState(): Record<string, string[]> {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')
+      } catch {
+        return {}
+      }
+    }
+    function saveState(s: Record<string, string[]>) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(s))
+      } catch {
+        /* ignore */
+      }
+    }
+
+    const state = loadState()
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const key = tab.dataset.key
+        tabs.forEach((t) => t.classList.toggle('active', t === tab))
+        panels.forEach((p) => {
+          p.style.display = p.dataset.key === key ? 'block' : 'none'
+        })
+      })
+    })
+
+    panels.forEach((panel) => {
+      const key = panel.dataset.key as string
+      const boxes = panel.querySelectorAll<HTMLInputElement>('input[type=checkbox]')
+      const progress = panel.querySelector('[data-progress]')
+
+      // 恢复勾选
+      const checked = state[key] || []
+      boxes.forEach((b) => {
+        b.checked = checked.includes(b.dataset.item as string)
+        b.closest('li')?.classList.toggle('checked', b.checked)
+      })
+      updateProgress()
+
+      boxes.forEach((b) => {
+        b.addEventListener('change', () => {
+          const li = b.closest('li')
+          li?.classList.toggle('checked', b.checked)
+          const list = Array.from(boxes)
+            .filter((x) => x.checked)
+            .map((x) => x.dataset.item as string)
+          state[key] = list
+          saveState(state)
+          updateProgress()
+        })
+      })
+
+      function updateProgress() {
+        if (!progress) return
+        const total = boxes.length
+        const done = Array.from(boxes).filter((x) => x.checked).length
+        progress.textContent = `已勾选 ${done} / ${total}`
+      }
+    })
+  }
+</script>

@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import FaqSection from '../components/FaqSection.astro'
+import { BRAND, REJECT_REASONS } from '../config/site.js'
+
+const title = '公务员报名材料被驳回？常见原因自查表'
+const description = '整理证件照与材料PDF最常见的5种驳回原因，每条附「怎么检查」「怎么补救」，帮你快速定位问题重新提交。'
+
+const faqs = [
+  {
+    q: '被驳回后多久能重新提交？',
+    a: '只要报名窗口还没关闭，就可以修改后重新提交。建议尽早处理，不要等到最后一天，避免网络拥堵。'
+  },
+  {
+    q: '驳回原因没写清楚怎么办？',
+    a: '部分系统只提示「不合格」不说明原因。可以对照本自查表逐项排查，最常见的是照片背景、材料模糊、PDF 超 3M 这三类。'
+  },
+  {
+    q: '重新提交还会被同一个原因驳回吗？',
+    a: '只要按补救方法改到位，一般不会。注意不要只改表面（比如只把体积压小但像素不够），要从根上满足官方要求。'
+  }
+]
+---
+
+<BaseLayout title={title} description={description} path="/reject-checklist">
+  <div class="article-head">
+    <h1>报名材料被驳回？先查这 5 项</h1>
+    <p class="article-meta">基于「{BRAND}」内置的高频驳回原因整理</p>
+  </div>
+
+  <div class="prose">
+    <p>
+      报名材料被驳回是最让人头疼的事——系统只说「不合格」，却不告诉你哪里不合格。
+      下面 5 条是最高频的驳回原因，每条都附了「怎么检查」和「怎么补救」，对照着快速排查。
+    </p>
+
+    {REJECT_REASONS.map((r, i) => (
+      <div class="reject-card">
+        <p class="reason">{i + 1}. {r.reason}</p>
+        <p class="check"><span class="label">怎么检查：</span>{r.check}</p>
+        <p class="fix"><span class="label">怎么补救：</span>{r.fix}</p>
+      </div>
+    ))}
+
+    <h2>提交前的最后检查</h2>
+    <ul>
+      <li>证件照：背景纯色、像素 >400×600、体积 35–100KB、人像清晰。</li>
+      <li>材料 PDF：顺序与清单一致、关键信息清晰、单个文件 ≤3M。</li>
+      <li>所有需盖章/签字的页面都拍进去了。</li>
+    </ul>
+
+    <p>
+      还不确定照片是否合格？用《<a href="/jingkao-idphoto-spec">京考报名照片规格详解</a>》里的换算工具自查。
+      材料打包看《<a href="/photos-to-pdf">多张照片合成 PDF</a>》。
+    </p>
+  </div>
+
+  <FaqSection faqs={faqs} />
+</BaseLayout>

@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import FaqSection from '../components/FaqSection.astro'
+import SpecCalculator from '../components/SpecCalculator.astro'
+import { BRAND, ID_PHOTO_SPEC, YEAR, OFFICIAL_NAME } from '../config/site.js'
+
+const { sizeMm, minKB, maxKB, targetKB, minPxW, minPxH, outPxW, outPxH } = ID_PHOTO_SPEC
+
+const title = `京考报名照片要求${YEAR}：二寸${sizeMm.w}×${sizeMm.h}mm、${minKB}-${maxKB}KB、像素规格详解`
+const description = `整理报考系统对报名照片的全部要求：二寸${sizeMm.w}×${sizeMm.h}mm、像素宽>${minPxW}高>${minPxH}、文件${minKB}-${maxKB}KB、背景无装饰。附毫米与像素换算工具，以及手机达标的最快做法。`
+
+const faqs = [
+  {
+    q: '京考报名的照片必须是二寸吗？',
+    a: `是。报名系统要求二寸，即 ${sizeMm.w}mm × ${sizeMm.h}mm，同时要求电子版像素宽 >${minPxW}、高 >${minPxH}，文件大小在 ${minKB}–${maxKB}KB 之间。建议输出 ${outPxW}×${outPxH}px，能同时满足比例与像素下限。`
+  },
+  {
+    q: '为什么我 99KB 的照片还是传不上去？',
+    a: `因为「KB」有两种计算口径：1KB=1000B 和 1KB=1024B。报名系统可能按 1000 算，那 99KB（按 1024 算=101376B）就已经超了 100000B 的上限。最稳妥的做法是把体积控制在 ${targetKB}KB 左右，留足安全余量。`
+  },
+  {
+    q: '照片背景有什么要求？可以用生活照吗？',
+    a: '背景要求无装饰、纯色（白、蓝、红均可），不能有杂物、渐变色或其他人。不得使用生活照、艺术照、美颜过度的照片，人像需清晰无畸变。'
+  },
+  {
+    q: '毫米和像素怎么换算？300dpi 够吗？',
+    a: `换算公式：像素 = 毫米 ÷ 25.4 × dpi。${sizeMm.h}mm 按 300dpi 换算约 531px，但官方要求高 >${minPxH}px，说明系统要求的分辨率高于印刷标准。可以用本页的换算工具直接算。`
+  },
+  {
+    q: '怎么在手机上最快做出合格的报名照片？',
+    a: `用「${BRAND}」小程序：选一张正脸照，它会按二寸 ${sizeMm.w}×${sizeMm.h}mm 裁剪、输出 ${outPxW}×${outPxH}px、自动压到 ${minKB}–${maxKB}KB，并检测背景和清晰度。注意它不承诺「必过」，但按官方要求做了专项适配。`
+  }
+]
+---
+
+<BaseLayout title={title} description={description} path="/jingkao-idphoto-spec">
+  <div class="article-head">
+    <h1>京考报名照片要求：尺寸、像素、大小一次说清</h1>
+    <p class="article-meta">
+      参考《${OFFICIAL_NAME}》整理 · 材料要求以官方公告为准
+    </p>
+  </div>
+
+  <div class="prose">
+    <p>
+      每年京考报名，卡在照片上传这一步的考生不在少数：明明显示 99KB，系统却提示「文件过大」；
+      明明是二寸照片，又说「像素不足」。本文把报名系统对照片的全部要求拆成尺寸、像素、体积、背景四项，
+      一项一项说清楚，并附上换算工具，帮你一次达标。
+    </p>
+
+    <h2>一、官方要求速查表</h2>
+    <p>以下为报名系统对证件照的硬性要求：</p>
+    <table>
+      <thead>
+        <tr>
+          <th>项目</th>
+          <th>要求</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>尺寸</td>
+          <td class="spec-num">二寸 {sizeMm.w}×{sizeMm.h}mm</td>
+          <td>宽高比需为 {sizeMm.w}:{sizeMm.h}</td>
+        </tr>
+        <tr>
+          <td>格式</td>
+          <td class="spec-num">{ID_PHOTO_SPEC.format}</td>
+          <td>不支持 PNG、BMP 等格式</td>
+        </tr>
+        <tr>
+          <td>文件大小</td>
+          <td class="spec-num">{minKB}–{maxKB}KB</td>
+          <td>建议控制在 {targetKB}KB 左右留余量</td>
+        </tr>
+        <tr>
+          <td>像素（宽）</td>
+          <td class="spec-num">宽 &gt; {minPxW}px</td>
+          <td>仅设下限，无上限</td>
+        </tr>
+        <tr>
+          <td>像素（高）</td>
+          <td class="spec-num">高 &gt; {minPxH}px</td>
+          <td>仅设下限，无上限</td>
+        </tr>
+        <tr>
+          <td>背景</td>
+          <td class="spec-num">无装饰、纯色</td>
+          <td>白 / 蓝 / 红底均可，不能有杂物</td>
+        </tr>
+        <tr>
+          <td>人像</td>
+          <td class="spec-num">清晰、无畸变</td>
+          <td>不得生活照、艺术照、过度美颜</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p class="callout-title">本工具推荐输出</p>
+      <p>
+        「{BRAND}」默认输出 <strong>{outPxW}×{outPxH}px</strong>——精确 {sizeMm.w}:{sizeMm.h} 比例，
+        且宽 >{minPxW}、高 >{minPxH}，同时满足尺寸与像素两项要求。
+      </p>
+    </div>
+
+    <h2>二、为什么「二寸」和「像素」要同时看</h2>
+    <p>
+      很多人以为二寸照片就是固定像素，其实不然。「二寸」是<strong>物理尺寸</strong>（{sizeMm.w}×{sizeMm.h}mm），
+      而像素是<strong>数字分辨率</strong>，两者之间靠 dpi（每英寸点数）换算：
+    </p>
+    <blockquote>
+      像素 = 毫米 ÷ 25.4 × dpi
+    </blockquote>
+    <p>
+      按印刷常用的 300dpi 算，{sizeMm.h}mm 只有约 <strong>531px</strong>，但报名系统要求高 >{minPxH}px。
+      这说明系统要求的分辨率<strong>高于普通印刷标准</strong>——它要的是更清晰的电子照片，而不是打印出来的二寸照。
+    </p>
+    <p>
+      所以只满足「二寸」还不够，还得保证像素双双超过下限。本工具输出的 {outPxW}×{outPxH}px 正好满足：
+      比例是 {sizeMm.w}:{sizeMm.h}（即二寸），宽 {outPxW}>{minPxW}、高 {outPxH}>{minPxH}。
+    </p>
+
+    <h2>三、为什么 99KB 还是会上传失败</h2>
+    <p>
+      这是最常见的坑。「KB」有两种计算口径：
+    </p>
+    <ul>
+      <li><strong>1KB = 1024B</strong>（计算机二进制，操作系统常用）</li>
+      <li><strong>1KB = 1000B</strong>（十进制，部分报名系统采用）</li>
+    </ul>
+    <p>
+      如果你按 1024 算把照片压到 99KB（= 101376B），而报名系统按 1000 算，
+      那 101376B = <strong>101.4KB</strong>，已经超过 {maxKB}KB 上限，自然上传失败。
+    </p>
+    <p>
+      反过来，下限 {minKB}KB 也要小心：按 1000 算是 35000B，按 1024 算是 35840B，
+      系统取更严的 1024 口径时，35000B 就不够 {minKB}KB。
+    </p>
+    <div class="callout">
+      <p class="callout-title">最稳妥的做法</p>
+      <p>
+        把体积控制在 <strong>{targetKB}KB 左右</strong>（按 1024 算约 71680B），
+        不管系统用哪种口径，都稳稳落在 {minKB}–{maxKB}KB 区间内。不要贴着 {maxKB}KB 压线。
+      </p>
+    </div>
+
+    <h2>四、这三项最容易导致驳回</h2>
+    <ol class="steps">
+      <li>
+        <strong>背景有装饰或杂物</strong>：头发丝、衣物边缘、背景里的家具或渐变色，
+        都可能被系统判定为「背景不合格」。建议用纯白、纯蓝或纯红底。
+      </li>
+      <li>
+        <strong>照片偏模糊</strong>：对焦不准、手抖、光线不足都会导致模糊。
+        放大到 100% 看五官和头发边缘是否清晰。
+      </li>
+      <li>
+        <strong>用了生活照或过度美颜</strong>：报名系统会做人脸比对，
+        美颜过度（磨皮、大眼、瘦脸）可能导致与本人不符而驳回。
+      </li>
+    </ol>
+
+    <h2>五、毫米与像素怎么换算</h2>
+    <p>
+      用下面的小工具可以快速换算。选好 dpi 档位，输入毫米数就能得到像素数；
+      也可以输入你的照片文件大小，判断是否落在 {minKB}–{maxKB}KB 的合格区间内。
+    </p>
+
+    <SpecCalculator />
+
+    <h3>常见 dpi 对照表</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>d</th>
+          <th>{sizeMm.w}mm 宽（px）</th>
+          <th>{sizeMm.h}mm 高（px）</th>
+          <th>是否满足高 >{minPxH}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>200</td><td>{Math.round((sizeMm.w / 25.4) * 200)}</td><td>{Math.round((sizeMm.h / 25.4) * 200)}</td><td>❌ 不满足</td></tr>
+        <tr><td>300</td><td>{Math.round((sizeMm.w / 25.4) * 300)}</td><td>{Math.round((sizeMm.h / 25.4) * 300)}</td><td>❌ 不满足（仅约 531px）</td></tr>
+        <tr><td>350</td><td>{Math.round((sizeMm.w / 25.4) * 350)}</td><td>{Math.round((sizeMm.h / 25.4) * 350)}</td><td>✅ 满足</td></tr>
+      </tbody>
+    </table>
+    <p>
+      可以看到，即使 300dpi 的「印刷级」二寸照，高度也只有约 531px，达不到官方 >{minPxH}px 的要求。
+      所以要么用 350dpi 以上扫描/拍摄，要么直接用本工具输出 {outPxW}×{outPxH}px。
+    </p>
+
+    <h2>六、手机上最快达标的做法</h2>
+    <p>
+      如果不想自己算 dpi、调画质，最简单的方式是用「{BRAND}」小程序：
+    </p>
+    <ol class="steps">
+      <li>微信搜索「{BRAND}」打开小程序，选择「证件照」。</li>
+      <li>拍一张或从相册选一张正脸照片。</li>
+      <li>小程序自动按 {sizeMm.w}×{sizeMm.h}mm 裁剪、输出 {outPxW}×{outPxH}px、压到 {minKB}–{maxKB}KB，并检测背景和清晰度。</li>
+      <li>觉得没问题就保存到手机，直接上传报名系统。</li>
+    </ol>
+    <div class="callout">
+      <p class="callout-title">客观说明</p>
+      <p>
+        本工具按京考报名要求做了专项适配，但不承诺「必过」——最终审核由报名系统决定。
+        如果照片本身严重模糊或背景杂乱，任何工具都无法补救。
+      </p>
+    </div>
+
+    <p>
+      关于如何把照片压到 {maxKB}KB 以内，可参考《<a href="/compress-photo">照片怎么压缩到 {maxKB}KB 以内：手机可用的 4 种办法</a>》；
+      多张材料照片怎么合成一个 PDF，见《<a href="/photos-to-pdf">多张材料照片合成一个 PDF</a>》。
+    </p>
+  </div>
+
+  <FaqSection faqs={faqs} />
+</BaseLayout>

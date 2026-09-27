@@ -1,0 +1,25 @@
+---
+/**
+ * FaqJsonLd.astro —— 输出 FAQPage 结构化数据
+ * 每个内容页底部 FAQ 区必须配套，能在百度搜索结果里展示问答。
+ */
+interface Props {
+  faqs: { q: string; a: string }[]
+}
+const { faqs } = Astro.props
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.a
+    }
+  }))
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(data)} />

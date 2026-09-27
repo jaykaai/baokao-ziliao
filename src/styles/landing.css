@@ -1,0 +1,877 @@
+/* ============================================================
+   landing.css —— 首页落地页样式（简洁科技工具风）
+   大标题 + 大留白 + 纯 CSS 手机界面还原。
+   只服务 index.astro，不影响文章页的 global.css。
+   ============================================================ */
+
+.lp {
+  --lp-primary: #2f6bff;
+  --lp-text: #16181d;
+  --lp-soft: #6b7280;
+  --lp-border: #e6e9f0;
+  --lp-bg-soft: #f7f8fa;
+}
+
+.lp-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== Hero ===== */
+.lp-hero {
+  padding: 84px 0 40px;
+  text-align: center;
+  background:
+    radial-gradient(60% 50% at 50% 0%, #eef3ff 0%, rgba(238, 243, 255, 0) 70%),
+    #fff;
+}
+
+.lp-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border: 1px solid var(--lp-border);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--lp-soft);
+  background: rgba(255, 255, 255, 0.8);
+  margin-bottom: 26px;
+  letter-spacing: 0.04em;
+}
+
+.lp-hero h1 {
+  font-size: clamp(34px, 6vw, 58px);
+  line-height: 1.18;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--lp-text);
+  margin: 0 auto 0.45em;
+  max-width: 15em;
+}
+
+.lp-hero .lp-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.9;
+  color: var(--lp-soft);
+  max-width: 40em;
+  margin: 0 auto 36px;
+}
+
+.lp-hero .lp-sub strong {
+  color: var(--lp-text);
+  font-weight: 600;
+}
+
+.lp-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 64px;
+}
+
+.lp-btn-primary {
+  display: inline-block;
+  background: var(--lp-text);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 13px 34px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.lp-btn-primary:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(22, 24, 29, 0.18);
+}
+
+.lp-btn-ghost {
+  font-size: 14px;
+  color: var(--lp-soft);
+}
+
+/* ===== 手机模型 ===== */
+.lp-phones {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.lp-phone {
+  width: 268px;
+  flex-shrink: 0;
+  border-radius: 42px;
+  background: linear-gradient(160deg, #3c414c, #14161c);
+  padding: 10px;
+  box-shadow:
+    0 40px 80px -24px rgba(24, 34, 56, 0.35),
+    0 10px 28px rgba(24, 34, 56, 0.12);
+  text-align: left;
+}
+
+.lp-phone--secondary {
+  /* 与主手机同尺寸并排：两台手机平等展示，只靠内容区分主次 */
+}
+
+.lp-screen {
+  background: #f5f6f8;
+  border-radius: 33px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 552px;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+}
+
+.lp-phone--secondary .lp-screen {
+  height: 552px;
+}
+
+/* 两台手机下方的功能小注 */
+.lp-phones-note {
+  margin: 28px 0 0;
+  font-size: 13px;
+  color: #9aa1ad;
+}
+
+/* 状态栏 / 导航栏 */
+.lp-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px 4px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #1f2329;
+}
+.lp-status-dots {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.lp-status-dots i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #1f2329;
+  opacity: 0.7;
+}
+
+.lp-appbar {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1f2329;
+  padding: 6px 0 9px;
+  background: #fff;
+}
+
+/* 深色屏幕变体（保留备用，当前两台手机都用浅色） */
+.lp-screen--dark {
+  background: #2d2d2d;
+}
+.lp-screen--dark .lp-status {
+  color: #fff;
+}
+.lp-screen--dark .lp-status-dots i {
+  background: #fff;
+}
+.lp-screen--dark .lp-appbar {
+  color: #fff;
+  background: #2d2d2d;
+}
+
+.lp-body {
+  flex: 1;
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+/* —— 手机 1：材料打包页（结构按真实实现，配色与证件照手机统一为浅色） —— */
+.lp-tpl {
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+}
+.lp-tpl span {
+  font-size: 8.5px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #fff;
+  color: #5a6472;
+  border: 1px solid #e5e9f0;
+  white-space: nowrap;
+}
+.lp-tpl span.on {
+  background: #2f6bff;
+  border-color: #2f6bff;
+  color: #fff;
+  font-weight: 500;
+}
+
+.lp-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+}
+.lp-meta span:first-child {
+  color: #5a6472;
+}
+.lp-meta span:last-child {
+  color: #8a93a3;
+}
+
+/* A4 纸卡片：白纸 + 极浅灰页边距带 */
+.lp-paper {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 2px;
+  box-shadow: 0 2px 10px rgba(31, 35, 41, 0.08);
+  flex: 1;
+  min-height: 0;
+}
+.lp-paper .band {
+  position: absolute;
+  background: #f4f6f8;
+}
+.lp-band-top {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7.5%;
+}
+.lp-band-left {
+  left: 0;
+  top: 7%;
+  bottom: 7%;
+  width: 7.5%;
+}
+.lp-band-right {
+  right: 0;
+  top: 7%;
+  bottom: 7%;
+  width: 7.5%;
+}
+.lp-band-bottom {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7.5%;
+  font-size: 6px;
+  color: #8a93a3;
+}
+
+.lp-paper-title {
+  font-size: 8.5px;
+  font-weight: 600;
+  color: #1f2329;
+  font-family: 'FangSong', 'STFangsong', serif;
+  letter-spacing: 0.06em;
+}
+.lp-rename {
+  font-size: 6.5px;
+  color: #5a6472;
+  border-radius: 999px;
+  padding: 1px 6px;
+  background: #fff;
+  border: 1px solid #dfe3e9;
+}
+
+/* 版心：拼页后的多格（对应小程序 g2 上下拼接），每格一张材料图 + 各自的蓝色 ⟳ */
+.lp-cells {
+  position: absolute;
+  left: 7.5%;
+  right: 7.5%;
+  top: 7%;
+  bottom: 7%;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  gap: 3px;
+  padding: 3px 0;
+}
+.lp-cpage {
+  position: relative;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eceff3;
+}
+.lp-rot {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(47, 107, 255, 0.94);
+  color: #fff;
+  font-size: 7px;
+  line-height: 12px;
+  text-align: center;
+  font-style: normal;
+}
+
+/* 版心内的材料图占位：证件卡片（按格高等比缩放） */
+.lp-idcard {
+  height: 80%;
+  aspect-ratio: 85 / 54;
+  background: #f2f5fa;
+  border-radius: 3px;
+  border: 1px solid #dfe6f0;
+  padding: 5%;
+  display: flex;
+  gap: 7%;
+}
+.lp-idcard-photo {
+  width: 24%;
+  background: #d4dcea;
+  border-radius: 2px;
+}
+.lp-idcard-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14%;
+}
+.lp-idcard-lines i {
+  display: block;
+  height: 4px;
+  border-radius: 3px;
+  background: #d4dcea;
+}
+.lp-idcard-lines i:nth-child(2) {
+  width: 75%;
+}
+.lp-idcard-lines i:nth-child(3) {
+  width: 55%;
+}
+
+/* 画质控制：浮在纸身底部（.qb 浅灰圆钮 + 中/约 2.1M） */
+.lp-quality {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 11%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 8.5px;
+  color: #1f2329;
+}
+.lp-quality b {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 10px;
+  color: #1f2329;
+}
+.lp-quality .qt {
+  text-align: center;
+  line-height: 1.35;
+}
+.lp-quality .qt small {
+  display: block;
+  font-size: 7px;
+  color: #8a94a6;
+}
+
+/* 三个操作：继续拍下一页 / 拼到本页 / 下一份材料 */
+.lp-acts {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.lp-acts span {
+  flex: 1;
+  text-align: center;
+  background: #f0f2f5;
+  color: #5a6472;
+  font-size: 7.5px;
+  padding: 6px 0;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+/* 底部胶片条：已拍缩略图（选中蓝框）+ 虚线待拍框（序号 + 材料名，可点选） */
+.lp-film {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.lp-thumb {
+  width: 22px;
+  height: 28px;
+  border-radius: 3px;
+  background: #eef1f5;
+  border: 1.5px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.lp-thumb.on {
+  border-color: #2f6bff;
+}
+.lp-thumb-card {
+  width: 14px;
+  height: 9px;
+  border-radius: 1px;
+  background: #c9d2e0;
+}
+.lp-thumb-doc {
+  width: 9px;
+  height: 14px;
+  border-radius: 1px;
+  background: #c9d2e0;
+}
+.lp-pending {
+  height: 28px;
+  min-width: 24px;
+  padding: 0 5px;
+  border-radius: 3px;
+  background: #fff;
+  border: 1px dashed #c9d2e0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.lp-pending i {
+  font-style: normal;
+  font-size: 6.5px;
+  color: #9aa1ae;
+  line-height: 1.2;
+}
+.lp-pending em {
+  font-style: normal;
+  font-size: 6px;
+  color: #8a93a3;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* 总大小条：浅灰条 + 蓝色「下一步 ›」 */
+.lp-sizebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #eef1f5;
+  border-radius: 5px;
+  padding: 5px 8px;
+  font-size: 7px;
+  color: #5a6472;
+  flex-shrink: 0;
+}
+.lp-sizebar-go {
+  color: #2f6bff;
+  font-weight: 600;
+  font-size: 8px;
+}
+
+/* —— 手机 2：证件照页 —— */
+.lp-compare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 4px 0 2px;
+}
+.lp-photo {
+  width: 66px;
+  aspect-ratio: 34 / 45;
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+}
+.lp-photo--before {
+  background: #e3e6ec;
+}
+.lp-photo--after {
+  background: #438edb;
+}
+.lp-portrait {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 36%, #c3c9d4 0 24%, rgba(0, 0, 0, 0) 25%),
+    radial-gradient(ellipse 130% 70% at 50% 108%, #c3c9d4 0 58%, rgba(0, 0, 0, 0) 60%);
+}
+.lp-photo--after .lp-portrait {
+  background:
+    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.88) 0 24%, rgba(0, 0, 0, 0) 25%),
+    radial-gradient(ellipse 130% 70% at 50% 108%, rgba(255, 255, 255, 0.88) 0 58%, rgba(0, 0, 0, 0) 60%);
+}
+.lp-photo-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 7px;
+  text-align: center;
+  padding: 2px 0;
+  color: #fff;
+  background: rgba(31, 35, 41, 0.45);
+}
+.lp-compare-arrow {
+  font-size: 12px;
+  color: #8a93a3;
+}
+.lp-photo-meta {
+  display: flex;
+  justify-content: space-around;
+  font-size: 7px;
+  color: #8a93a3;
+  margin-bottom: 2px;
+}
+
+.lp-bgrow {
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.lp-bgrow-title {
+  font-size: 8px;
+  color: #5a6472;
+  margin-bottom: 6px;
+}
+.lp-swatches {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.lp-swatch {
+  text-align: center;
+  font-size: 7px;
+  color: #5a6472;
+}
+.lp-swatch i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid #e5e9f0;
+  margin: 0 auto 3px;
+  font-style: normal;
+  font-size: 9px;
+  color: #fff;
+}
+.lp-swatch.on i {
+  outline: 2px solid #2f6bff;
+  outline-offset: 1px;
+}
+
+.lp-checks {
+  background: #fff;
+  border-radius: 10px;
+  padding: 4px 10px;
+}
+.lp-check-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8.5px;
+  color: #5a6472;
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f2f5;
+}
+.lp-check-row:last-child {
+  border-bottom: none;
+}
+.lp-check-row .ok {
+  color: #18a058;
+  font-weight: 500;
+}
+
+.lp-btn-save {
+  margin-top: auto;
+  background: #1f2329;
+  color: #fff;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 9px 0;
+  border-radius: 10px;
+}
+
+/* ===== 官方要求速览 ===== */
+.lp-stats {
+  border-top: 1px solid var(--lp-border);
+  border-bottom: 1px solid var(--lp-border);
+  background: #fff;
+}
+.lp-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 36px 0;
+  text-align: center;
+}
+.lp-stat b {
+  display: block;
+  font-size: clamp(20px, 2.6vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--lp-text);
+}
+.lp-stat span {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--lp-soft);
+}
+
+/* ===== 功能介绍 ===== */
+.lp-section {
+  padding: 88px 0;
+  text-align: center;
+}
+.lp-section--soft {
+  background: var(--lp-bg-soft);
+}
+.lp-kicker {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--lp-primary);
+  margin-bottom: 14px;
+}
+.lp-section h2 {
+  font-size: clamp(24px, 3.4vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--lp-text);
+  margin: 0 0 0.5em;
+}
+.lp-section .lp-desc {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--lp-soft);
+  max-width: 38em;
+  margin: 0 auto 44px;
+}
+.lp-section .lp-desc strong {
+  color: var(--lp-text);
+  font-weight: 600;
+}
+
+/* 步骤卡 */
+.lp-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  text-align: left;
+}
+.lp-step {
+  background: #fff;
+  border: 1px solid var(--lp-border);
+  border-radius: 14px;
+  padding: 22px 20px;
+}
+.lp-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--lp-text);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.lp-step h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--lp-text);
+  margin: 0 0 6px;
+}
+.lp-step p {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--lp-soft);
+  margin: 0;
+}
+
+/* 证件照 spec chips */
+.lp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.lp-chip {
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--lp-border);
+  font-size: 14px;
+  color: var(--lp-text);
+}
+.lp-chip b {
+  font-weight: 600;
+}
+.lp-price-note {
+  margin-top: 30px;
+  font-size: 13px;
+  color: #9aa1ad;
+}
+
+/* ===== 扫码区 ===== */
+.lp-qr-section {
+  padding: 88px 0;
+  text-align: center;
+}
+.lp-qr-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 36px;
+  background: #fff;
+  border: 1px solid var(--lp-border);
+  border-radius: 20px;
+  padding: 36px 48px;
+  box-shadow: 0 24px 60px -30px rgba(24, 34, 56, 0.18);
+  text-align: left;
+}
+.lp-qr-card img {
+  width: 168px;
+  height: 168px;
+  border-radius: 10px;
+  border: 1px solid var(--lp-border);
+  flex-shrink: 0;
+}
+.lp-qr-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--lp-text);
+  margin: 0 0 8px;
+}
+.lp-qr-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--lp-soft);
+  margin: 0;
+}
+.lp-qr-desc b {
+  color: var(--lp-text);
+}
+
+/* ===== 底部 FAQ（低调，机器可读）===== */
+.lp-faq {
+  border-top: 1px solid var(--lp-border);
+  padding: 40px 0 56px;
+}
+.lp-faq-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+  font-size: 13px;
+}
+.lp-faq-title {
+  font-size: 13px;
+  color: #9aa1ad;
+  margin: 0 0 14px;
+  font-weight: 500;
+}
+.lp-faq details {
+  border-bottom: 1px solid #f0f2f5;
+  padding: 10px 0;
+}
+.lp-faq summary {
+  cursor: pointer;
+  color: #8a93a3;
+  font-weight: 500;
+}
+.lp-faq details p {
+  color: #9aa1ad;
+  line-height: 1.8;
+  margin: 8px 0 2px;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 860px) {
+  .lp-hero {
+    padding-top: 56px;
+  }
+  .lp-phones {
+    gap: 24px;
+  }
+  .lp-phone {
+    width: 224px;
+  }
+  .lp-screen {
+    height: 464px;
+  }
+  .lp-phone--secondary .lp-screen {
+    height: 464px;
+  }
+  .lp-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 16px;
+  }
+  .lp-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .lp-qr-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* 窄屏：两台手机上下堆叠展示（宽屏才是左右并排） */
+  .lp-phones {
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+  .lp-phones-note {
+    display: none;
+  }
+  .lp-cta {
+    margin-bottom: 44px;
+  }
+  .lp-steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .lp-section {
+    padding: 60px 0;
+  }
+  .lp-btn-primary {
+    padding: 12px 28px;
+  }
+}

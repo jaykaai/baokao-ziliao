@@ -1,0 +1,147 @@
+---
+/**
+ * BaseLayout.astro —— 全站基础布局
+ * 负责：<head> SEO 元信息 / canonical / OG / 结构化数据槽位 / 页眉 / 页脚 / 免责声明 / 转化组件
+ *
+ * 每个页面通过 props 传入 title / description / path / jsonLd。
+ */
+import '../styles/global.css'
+import {
+  BRAND,
+  DOMAIN,
+  ICP,
+  DISCLAIMER,
+  QRCODE_PATH,
+  OG_IMAGE,
+  MINI_PROGRAM_NAME
+} from '../config/site.js'
+
+interface Props {
+  title: string
+  description: string
+  path: string // 如 '/jingkao-idphoto-spec'，首页传 '/'
+  jsonLd?: Record<string, any> | Record<string, any>[]
+  /**
+   * landing = 首页落地页：页眉只留品牌、不放文章导航、
+   * 不输出正文下的二维码卡片与移动端悬浮条（首页有自己的扫码区）。
+   * article = 内容页：保持原有导航与转化组件。
+   */
+  variant?: 'landing' | 'article'
+}
+
+const { title, description, path, jsonLd, variant = 'article' } = Astro.props
+const isLanding = variant === 'landing'
+
+const canonical = `${DOMAIN}${path === '/' ? '/' : path}`
+const ogImage = `${DOMAIN}${OG_IMAGE}`
+
+// 结构化数据统一输出：单个对象或数组都支持
+const jsonLdScript = jsonLd
+  ? Array.isArray(jsonLd)
+    ? jsonLd.map((o) => JSON.stringify(o)).join(',')
+    : JSON.stringify(jsonLd)
+  : ''
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content={path === '/' ? 'website' : 'article'} />
+    <meta property="og:site_name" content={BRAND} />
+    <meta property="og:url" content={canonical} />
+
+    <!-- 移动端优化 -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#2F6BFF" />
+
+    {jsonLd && (
+      <script type="application/ld+json" set:html={jsonLdScript} />
+    )}
+  </head>
+  <body>
+    {/* 落地页页眉完全去掉（品牌名在 Hero / 扫码区已出现），只有文章页保留页眉 */}
+    {!isLanding && (
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="/" class="brand"><span class="brand-dot"></span>{BRAND}</a>
+          <nav class="nav">
+            <a href="/">首页</a>
+            <a href="/jingkao-idphoto-spec">照片规格</a>
+            <a href="/material-checklist">材料清单</a>
+            <a href="/compress-photo">压缩照片</a>
+          </nav>
+        </div>
+      </header>
+    )}
+
+    <main>
+      {isLanding ? <slot /> : (
+        <div class="container"><slot /></div>
+      )}
+    </main>
+
+    {/* 正文下方转化卡片：落地页有自己的扫码区，不重复输出 */}
+    {!isLanding && (
+      <div class="container">
+        <div class="wechat-card">
+          <img
+            src={QRCODE_PATH}
+            alt={`${BRAND} 小程序码`}
+            width="120"
+            height="120"
+          />
+          <div class="wechat-card-body">
+            <p class="wechat-card-title">{BRAND}</p>
+            <p class="wechat-card-desc">微信扫码，或搜索「{MINI_PROGRAM_NAME}」</p>
+            <span class="wechat-card-cta">扫码使用 →</span>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* 移动端悬浮转化条 */}
+    {!isLanding && (
+      <div class="mobile-cta">
+        <div class="mobile-cta-inner">
+          <img src={QRCODE_PATH} alt={`${BRAND} 小程序码`} width="38" height="38" />
+          <div class="mobile-cta-text">
+            <strong>{BRAND}</strong>
+            <span>微信扫码处理报名材料</span>
+          </div>
+          <span class="mobile-cta-btn">去使用</span>
+        </div>
+      </div>
+    )}
+
+    <footer class="site-footer">
+      <div class="container">
+        <p class="disclaimer">{DISCLAIMER}</p>
+        {/* SEO 内链：低调放在页脚，人可用、机器可爬 */}
+        <p class="footer-links">
+          <a href="/jingkao-idphoto-spec">照片规格</a>
+          <a href="/material-checklist">材料清单</a>
+          <a href="/compress-photo">压缩照片</a>
+          <a href="/photos-to-pdf">合成 PDF</a>
+          <a href="/reject-checklist">驳回自查</a>
+          <a href="/about">关于</a>
+          <a href="/privacy">隐私说明</a>
+        </p>
+        <p class="icp">
+          {ICP
+            ? `${ICP} · ${BRAND} © 2026`
+            : `${BRAND} © 2026（备案号待填写）`}
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

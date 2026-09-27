@@ -1,0 +1,87 @@
+---
+/**
+ * SpecCalculator.astro —— 毫米↔像素 与 KB↔MB 换算工具（纯前端，不上传任何文件）
+ * 内嵌于 /jingkao-idphoto-spec 页面，提升停留时长、承接工具型搜索词。
+ */
+import { ID_PHOTO_SPEC } from '../config/site.js'
+const { outPxW, outPxH, minPxW, minPxH, minKB, maxKB, targetKB } = ID_PHOTO_SPEC
+---
+
+<div class="calculator" id="spec-calculator">
+  <h3 style="margin-top:0">毫米 · 像素 · 体积 换算工具</h3>
+
+  <div class="calc-row">
+    <div class="calc-field">
+      <label>毫米（mm）</label>
+      <input type="number" id="calc-mm" value="45" min="1" step="1" />
+    </div>
+    <div class="calc-field">
+      <label>分辨率（dpi）</label>
+      <select id="calc-dpi">
+        <option value="200">200 dpi</option>
+        <option value="300" selected>300 dpi</option>
+        <option value="350">350 dpi</option>
+      </select>
+    </div>
+    <div class="calc-field">
+      <label>换算结果（像素）</label>
+      <input type="text" id="calc-px" readonly />
+    </div>
+  </div>
+
+  <div class="calc-row">
+    <div class="calc-field">
+      <label>文件大小（KB）</label>
+      <input type="number" id="calc-kb" value="70" min="1" step="1" />
+    </div>
+    <div class="calc-field">
+      <label>换算（MB）</label>
+      <input type="text" id="calc-mb" readonly />
+    </div>
+    <div class="calc-field">
+      <label>是否达标（京考要求 35–100KB）</label>
+      <input type="text" id="calc-pass" readonly />
+    </div>
+  </div>
+
+  <div class="calc-result" id="calc-info">
+    京考报名照片官方要求：宽 > {minPxW}px、高 > {minPxH}px、文件 {minKB}–{maxKB}KB。<br />
+    推荐输出 <strong>{outPxW}×{outPxH}px</strong>（满足 34:45 且双双超过下限），体积控制在 <strong>{targetKB}KB 左右</strong>留安全余量。
+  </div>
+</div>
+
+<script>
+  const mm = document.getElementById('calc-mm') as HTMLInputElement
+  const dpi = document.getElementById('calc-dpi') as HTMLSelectElement
+  const px = document.getElementById('calc-px') as HTMLInputElement
+  const kb = document.getElementById('calc-kb') as HTMLInputElement
+  const mb = document.getElementById('calc-mb') as HTMLInputElement
+  const pass = document.getElementById('calc-pass') as HTMLInputElement
+
+  function update() {
+    const mmVal = parseFloat(mm.value) || 0
+    const dpiVal = parseFloat(dpi.value) || 300
+    // mm → px: px = mm / 25.4 * dpi
+    const pxVal = Math.round((mmVal / 25.4) * dpiVal)
+    px.value = `${pxVal} px`
+
+    const kbVal = parseFloat(kb.value) || 0
+    mb.value = `${(kbVal / 1024).toFixed(4)} MB`
+
+    const minKB = 35
+    const maxKB = 100
+    if (kbVal >= minKB && kbVal <= maxKB) {
+      pass.value = '✅ 达标'
+      pass.style.color = '#1a7f37'
+    } else if (kbVal < minKB) {
+      pass.value = `❌ 偏小（低于 ${minKB}KB）`
+      pass.style.color = '#cf222e'
+    } else {
+      pass.value = `❌ 超标（超过 ${maxKB}KB）`
+      pass.style.color = '#cf222e'
+    }
+  }
+
+  ;[mm, dpi, kb].forEach((el) => el.addEventListener('input', update))
+  update()
+</script>

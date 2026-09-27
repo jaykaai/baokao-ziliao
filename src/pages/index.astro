@@ -1,0 +1,292 @@
+---
+/**
+ * index.astro —— 首页落地页
+ * 简洁科技工具风：大标题 + 纯 CSS 手机界面还原 + 扫码转化。
+ * SEO 靠：title/description、结构化数据（SoftwareApplication + FAQPage）、
+ * 页面底部低调 FAQ 区、页脚文章页内链。不做任何隐藏文字（Cloaking 风险）。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import '../styles/landing.css'
+import {
+  BRAND,
+  ID_PHOTO_SPEC,
+  PDF_LIMIT_MB,
+  QRCODE_PATH,
+  MINI_PROGRAM_NAME
+} from '../config/site.js'
+
+const { sizeMm, minKB, maxKB, minPxW, minPxH, outPxW, outPxH } = ID_PHOTO_SPEC
+
+const title = `报考材料夹 - 京考报名照片处理与材料PDF打包 | 微信小程序`
+const description = `京考报名证件照裁成二寸${sizeMm.w}×${sizeMm.h}mm、压缩到${minKB}-${maxKB}KB，可换白/蓝/红底；多张报名材料照片按官方顺序合成单个≤${PDF_LIMIT_MB}M的PDF。微信小程序「${BRAND}」，照片全程在手机本地处理，不上传服务器。`
+
+// FAQ：人机都可见（低调折叠样式），同时输出 FAQPage 结构化数据
+const faqs = [
+  {
+    q: '京考报名证件照有什么要求？',
+    a: `按北京市考试录用公务员报考指南，报名证件照须为二寸（${sizeMm.w}mm×${sizeMm.h}mm）JPG 格式，体积 ${minKB}–${maxKB}KB，宽 >${minPxW} 像素、高 >${minPxH} 像素，背景无装饰、人像清晰无明显畸变，不能使用生活照或艺术照。`
+  },
+  {
+    q: '证件照太大怎么压缩到 100KB 以内？',
+    a: '用微信小程序「报考材料夹」拍照或从相册选照片，会自动裁成二寸比例并迭代压缩到 35–100KB 之间，同时检测清晰度与背景，处理前后可对比像素和体积。'
+  },
+  {
+    q: '多张报名材料照片怎么合成一个不超过 3M 的 PDF？',
+    a: `在小程序里选择身份模板（应届毕业生 / 社会人员 / 留学回国 / 京外生源），按清单逐项拍照，支持自动裁边矫正、多图拼页、逐张调画质，最后本地合成一个 ≤${PDF_LIMIT_MB}M 的 PDF，材料名与页码按公文格式排版。`
+  },
+  {
+    q: '身份证、户口本照片会泄露吗？',
+    a: '不会。证件照裁剪压缩和 PDF 合成全部在手机本地完成，图片数据不上传任何服务器，只读不传。'
+  }
+]
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: BRAND,
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'WeChat Mini Program',
+    description,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'CNY' }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a }
+    }))
+  }
+]
+---
+
+<BaseLayout title={title} description={description} path="/" jsonLd={jsonLd} variant="landing">
+  <div class="lp">
+    <!-- ===== Hero ===== -->
+    <section class="lp-hero">
+      <div class="lp-container">
+        <span class="lp-badge">微信小程序 · 京考报名材料工具</span>
+        <h1>京考报名材料<br />手机上一次办妥</h1>
+        <p class="lp-sub">
+          证件照裁到二寸 {sizeMm.w}×{sizeMm.h}mm、压进 {minKB}–{maxKB}KB，白 / 蓝 / 红底一键换；
+          多张材料照片按官方顺序合成一个 <strong>≤{PDF_LIMIT_MB}M 的 PDF</strong>。
+          全程在手机本地处理，<strong>照片不上传</strong>。
+        </p>
+        <div class="lp-cta">
+          <a class="lp-btn-primary" href="#qrcode">微信扫码使用</a>
+          <span class="lp-btn-ghost">或微信搜索「{MINI_PROGRAM_NAME}」</span>
+        </div>
+
+        <!-- 手机界面还原 -->
+        <div class="lp-phones">
+          <!-- 手机 1：材料打包页（深色主题，按小程序真实实现还原：
+               白纸卡片 + 三个操作 + 底部胶片条（虚线待拍框可点选）+ 总大小条） -->
+          <div class="lp-phone">
+            <div class="lp-screen">
+              <div class="lp-status">
+                <span>9:41</span>
+                <span class="lp-status-dots"><i></i><i></i><i></i></span>
+              </div>
+              <div class="lp-appbar">附件打包</div>
+              <div class="lp-body">
+                <div class="lp-tpl">
+                  <span class="on">应届毕业生</span><span>社会人员</span><span>留学回国</span><span>京外生源</span>
+                </div>
+                <div class="lp-meta">
+                  <span>第 1 / 6 项</span><span>清单还差 5 项</span>
+                </div>
+                <div class="lp-paper">
+                  <div class="band lp-band-top">
+                    <span class="lp-paper-title">身份证正反面</span>
+                    <span class="lp-rename">改名</span>
+                  </div>
+                  <div class="band lp-band-left"></div>
+                  <div class="band lp-band-right"></div>
+                  <div class="lp-cells">
+                    <div class="lp-cpage">
+                      <div class="lp-idcard">
+                        <div class="lp-idcard-photo"></div>
+                        <div class="lp-idcard-lines"><i></i><i></i><i></i></div>
+                      </div>
+                      <span class="lp-rot">⟳</span>
+                    </div>
+                    <div class="lp-cpage">
+                      <div class="lp-idcard lp-idcard--alt">
+                        <div class="lp-idcard-lines"><i></i><i></i><i></i></div>
+                        <div class="lp-idcard-photo"></div>
+                      </div>
+                      <span class="lp-rot">⟳</span>
+                    </div>
+                  </div>
+                  <div class="lp-quality">
+                    <b>－</b>
+                    <span class="qt">中<small>约 2.1M</small></span>
+                    <b>＋</b>
+                  </div>
+                  <div class="band lp-band-bottom">
+                    <span>A4</span><span>第 1 页 · 共 6 页</span><span>上20 下20 左15 右15 mm</span>
+                  </div>
+                </div>
+                <div class="lp-acts">
+                  <span>继续拍下一页</span><span>拼到本页</span><span>下一份材料</span>
+                </div>
+                <div class="lp-film">
+                  <span class="lp-thumb on"><i class="lp-thumb-card"></i></span>
+                  <span class="lp-thumb"><i class="lp-thumb-doc"></i></span>
+                  <span class="lp-pending"><i>3</i><em>学生证</em></span>
+                  <span class="lp-pending"><i>4</i><em>就业推荐表</em></span>
+                  <span class="lp-pending"><i>5</i><em>户口本首页</em></span>
+                </div>
+                <div class="lp-sizebar">
+                  <span>已拍 2 张，预计 PDF 2.1M / 上限 3MB</span>
+                  <span class="lp-sizebar-go">下一步 ›</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 手机 2：证件照页（与主手机同尺寸并排） -->
+          <div class="lp-phone lp-phone--secondary">
+            <div class="lp-screen">
+              <div class="lp-status">
+                <span>9:41</span>
+                <span class="lp-status-dots"><i></i><i></i><i></i></span>
+              </div>
+              <div class="lp-appbar">证件照</div>
+              <div class="lp-body">
+                <div class="lp-compare">
+                  <div class="lp-photo lp-photo--before">
+                    <span class="lp-portrait"></span>
+                    <span class="lp-photo-label">处理前</span>
+                  </div>
+                  <span class="lp-compare-arrow">→</span>
+                  <div class="lp-photo lp-photo--after">
+                    <span class="lp-portrait"></span>
+                    <span class="lp-photo-label">处理后</span>
+                  </div>
+                </div>
+                <div class="lp-photo-meta">
+                  <span>3024×4032 · 4.2MB</span><span>{outPxW}×{outPxH} · 68KB</span>
+                </div>
+                <div class="lp-bgrow">
+                  <div class="lp-bgrow-title">背景色</div>
+                  <div class="lp-swatches">
+                    <span class="lp-swatch"><i style="background:#eef1f5"></i>原背景</span>
+                    <span class="lp-swatch"><i style="background:#ffffff"></i>白</span>
+                    <span class="lp-swatch on"><i style="background:#438edb">✓</i>蓝</span>
+                    <span class="lp-swatch"><i style="background:#ff0000"></i>红</span>
+                  </div>
+                </div>
+                <div class="lp-checks">
+                  <div class="lp-check-row"><span>体积</span><span>68KB</span><span class="ok">符合</span></div>
+                  <div class="lp-check-row"><span>像素</span><span>{outPxW}×{outPxH}</span><span class="ok">符合</span></div>
+                  <div class="lp-check-row"><span>格式</span><span>JPG</span><span class="ok">符合</span></div>
+                </div>
+                <div class="lp-btn-save">保存到手机</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="lp-phones-note">左：附件打包，底部点选待拍材料，「拼到本页」可拼多张 · 右：证件照处理</p>
+      </div>
+    </section>
+
+    <!-- ===== 官方要求速览 ===== -->
+    <section class="lp-stats">
+      <div class="lp-container">
+        <div class="lp-stats-grid">
+          <div class="lp-stat"><b>{sizeMm.w}×{sizeMm.h}mm</b><span>证件照尺寸（二寸）</span></div>
+          <div class="lp-stat"><b>{minKB}–{maxKB}KB</b><span>证件照体积</span></div>
+          <div class="lp-stat"><b>≤{PDF_LIMIT_MB}M</b><span>附件 PDF 大小</span></div>
+          <div class="lp-stat"><b>0 上传</b><span>照片全程不出手机</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 主打：材料打包 ===== -->
+    <section class="lp-section">
+      <div class="lp-container">
+        <span class="lp-kicker">核心功能 · 附件材料打包</span>
+        <h2>按官方清单拍完<br />直接得到能提交的 PDF</h2>
+        <p class="lp-desc">
+          应届、社会、留学、京外生源的材料清单各有不同，容易漏、容易乱、容易超 3M。
+          这里把整件事拆成一条线：<strong>选身份 → 逐项拍 → 合成即合规</strong>，不用再装扫描 App、不用电脑排版。
+        </p>
+        <div class="lp-steps-grid">
+          <div class="lp-step">
+            <span class="lp-step-num">1</span>
+            <h3>选身份模板</h3>
+            <p>应届毕业生 / 社会人员 / 留学回国 / 京外生源，对应材料清单自动列出，照着拍就不会漏。</p>
+          </div>
+          <div class="lp-step">
+            <span class="lp-step-num">2</span>
+            <h3>逐项拍照</h3>
+            <p>自动识别纸张边缘并透视矫正；一张装不下时自动拼页，页面顺序可拖动调整。</p>
+          </div>
+          <div class="lp-step">
+            <span class="lp-step-num">3</span>
+            <h3>微调画质</h3>
+            <p>每一页 ＋/－ 调整画质，导出体积实时可见，清晰度和 3M 限制两头都稳。</p>
+          </div>
+          <div class="lp-step">
+            <span class="lp-step-num">4</span>
+            <h3>导出 PDF</h3>
+            <p>仿宋材料名、页边距、页码已按公文格式排好，合成单个 ≤3M 的 PDF，保存即用。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 次要：证件照 ===== -->
+    <section class="lp-section lp-section--soft">
+      <div class="lp-container">
+        <span class="lp-kicker">证件照处理 · 免费</span>
+        <h2>不合规的照片<br />进来就变合规</h2>
+        <p class="lp-desc">
+          拍照或从相册选择，自动裁成二寸比例、迭代压缩到 {minKB}–{maxKB}KB，
+          处理前后 <strong>像素、体积逐项对比</strong>，清晰度和背景纯色自动检测，不放心都不行。
+        </p>
+        <div class="lp-chips">
+          <span class="lp-chip">二寸 <b>{sizeMm.w}×{sizeMm.h}mm</b></span>
+          <span class="lp-chip"><b>{minKB}–{maxKB}KB</b> JPG</span>
+          <span class="lp-chip">输出 <b>{outPxW}×{outPxH}px</b></span>
+          <span class="lp-chip">白 · 蓝 · 红 <b>一键换底</b></span>
+          <span class="lp-chip">清晰度 <b>自动检测</b></span>
+        </div>
+        <p class="lp-price-note">拍照、裁剪、压缩、预览 PDF 全程免费，随上随用。</p>
+      </div>
+    </section>
+
+    <!-- ===== 扫码 ===== -->
+    <section class="lp-qr-section" id="qrcode">
+      <div class="lp-container">
+        <div class="lp-qr-card">
+          <img src={QRCODE_PATH} alt={`${BRAND}微信小程序码`} width="168" height="168" />
+          <div>
+            <p class="lp-qr-title">微信扫码，直接使用</p>
+            <p class="lp-qr-desc">
+              在微信中扫描左侧小程序码；<br />
+              也可以在微信里搜索「<b>{MINI_PROGRAM_NAME}</b>」找到我们。<br />
+              报名季材料要求以官方公告为准，本工具仅为处理辅助。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 低调 FAQ（机器可读，避免 Cloaking）===== -->
+    <section class="lp-faq">
+      <div class="lp-faq-wrap">
+        <p class="lp-faq-title">常见问题</p>
+        {faqs.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

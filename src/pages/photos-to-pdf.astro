@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import FaqSection from '../components/FaqSection.astro'
+import HowToJsonLd from '../components/HowToJsonLd.astro'
+import { BRAND, PDF_LIMIT_MB } from '../config/site.js'
+
+const title = `多张材料照片合成一个PDF：手机上怎么做到不超过${PDF_LIMIT_MB}M`
+const description = `介绍把身份证、户口本、学历证等多张材料照片整理成单个PDF的做法，以及如何控制最终文件不超过${PDF_LIMIT_MB}M。`
+
+const howToSteps = [
+  '准备好所有材料原件：身份证、户口本、学历学位证等，按官方清单顺序排列。',
+  '逐个拍摄原件：光线充足、对焦清晰、拍正不要歪，不要拍屏幕或复印件。',
+  '用「报考材料夹」打包：多张拍照，自动识别边缘并矫正透视，拼页可选 1/2/4 格。',
+  '逐张调整画质，工具会智能分配每张的体积预算，确保最终 PDF 不超过 3M。',
+  '合成单个 PDF 后保存到手机，直接上传报名系统。'
+]
+
+const faqs = [
+  {
+    q: '为什么报名要把多张照片合成一个 PDF？',
+    a: '因为报名系统的附件上传框通常只接收单个文件。把身份证、户口本、学历证等多张材料照片合并成一个 PDF，才能一次性上传。'
+  },
+  {
+    q: `怎么保证 PDF 不超过 ${PDF_LIMIT_MB}M？`,
+    a: `关键不是把所有图硬塞进去，而是<strong>按总量分配每张的画质</strong>。比如 5 张图要压进 ${PDF_LIMIT_MB}M，每张平均 600KB，逐张调画质到目标值。「${BRAND}」会自动算这个预算，不用手算。`
+  },
+  {
+    q: '身份证正反面要分开还是放一页？',
+    a: '建议正反面拼成一页（2 格布局），最省空间，也方便审核人员对照查看。户口本同理，首页和本人页可以拼一页。'
+  },
+  {
+    q: '为什么不能拍屏幕或复印件？',
+    a: '拍屏幕会有摩尔纹（彩色条纹），拍复印件会丢失凹凸质感和印章颜色，都容易被系统判为「模糊」或「伪造」。一定要拍原件。'
+  },
+  {
+    q: '照片拍歪了怎么办？',
+    a: '拍歪了的材料，系统可能识别不清关键信息（如身份证号、公章）。「报考材料夹」会自动识别文档边缘并做透视矫正，把歪的拉正。'
+  }
+]
+---
+
+<BaseLayout title={title} description={description} path="/photos-to-pdf">
+  <HowToJsonLd name={`多张材料照片合成一个不超过 ${PDF_LIMIT_MB}M 的 PDF`} description={description} steps={howToSteps} />
+
+  <div class="article-head">
+    <h1>多张材料照片合成一个 PDF，并保证不超过 {PDF_LIMIT_MB}M</h1>
+    <p class="article-meta">公务员考试报名附件处理指南</p>
+  </div>
+
+  <div class="prose">
+    <p>
+      公务员报名通常要求上传<strong>一个</strong>附件文件，里面包含身份证、户口本、学历证等多张材料。
+      直接上传一堆图片肯定不行，需要先合成一个 PDF。本文讲清楚怎么拍、怎么拼、怎么控制体积。
+    </p>
+
+    <h2>为什么要合成一个 PDF</h2>
+    <p>
+      报名系统的附件上传框一般只接受单个文件，且格式多为 PDF 或图片。
+      如果只收一个文件，你就必须把身份证正面、反面、户口本、学历证……全部合成一个 PDF 再上传。
+      另外，单个附件还有体积上限——京考要求 <strong>≤ {PDF_LIMIT_MB}M</strong>。
+    </p>
+
+    <h2>第一步：把材料拍好</h2>
+    <p>合成 PDF 的质量取决于原始照片，拍的时候注意这几点：</p>
+    <ul>
+      <li><strong>拍原件，不要拍屏幕或复印件</strong>。拍屏幕会有摩尔纹（彩色条纹），拍复印件会丢失印章颜色，都容易被判模糊。</li>
+      <li><strong>光线充足、对焦清晰</strong>。关键信息（身份证号、公章、签字）必须放大后可读。</li>
+      <li><strong>尽量拍正</strong>。歪了虽然能矫正，但矫正会损失边缘像素。</li>
+      <li><strong>按官方清单顺序拍</strong>，合成后顺序一致，避免审核人员来回翻。</li>
+    </ul>
+
+    <div class="callout">
+      <p class="callout-title">千万别这么拍</p>
+      <p>不要对着电脑屏幕拍身份证扫描件，不要拍复印件上的复印件。这些做法都会让照片出现摩尔纹或模糊，被驳回概率极高。</p>
+    </div>
+
+    <h2>第二步：怎么拼页最省空间</h2>
+    <p>
+      拼页布局直接影响 PDF 体积。常见的三种：
+    </p>
+    <table>
+      <thead>
+        <tr><th>布局</th><th>适用</th><th>体积</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1 格（一页一张）</td><td>学历证、学位证等大尺寸材料</td><td>最大</td></tr>
+        <tr><td>2 格（一页两张）</td><td>身份证正反面、户口本首页+本人页</td><td>省一半</td></tr>
+        <tr><td>4 格（一页四张）</td><td>较小的证明材料</td><td>最省</td></tr>
+      </tbody>
+    </table>
+    <p>
+      <strong>身份证正反面拼成一页</strong>是最常见也最省空间的做法。
+      户口本同理，首页和本人页可以放一页。
+    </p>
+
+    <h2>第三步：怎么控制在 {PDF_LIMIT_MB}M 以内</h2>
+    <p>
+      这是最容易翻车的地方。很多人把每张图都压到很小，结果拼出来还是超 {PDF_LIMIT_MB}M；
+      或者有的图很清晰、有的图糊成一团。正确做法是<strong>按总量分配每张的画质预算</strong>：
+    </p>
+    <blockquote>
+      单张预算 = （{PDF_LIMIT_MB}M − PDF 结构开销）÷ 材料页数
+    </blockquote>
+    <p>
+      比如 6 页材料，PDF 结构开销约 0.3M，那每张图的预算约 (3−0.3)÷6 = 0.45M = 450KB。
+      逐张把画质调到 450KB 左右，最终 PDF 就稳稳在 {PDF_LIMIT_MB}M 以内。
+    </p>
+    <p>
+      手动算这个很麻烦，「{BRAND}」小程序会<strong>自动计算预算并逐张分配</strong>，
+      你只需要拖动画质滑块，实时看估算的总大小，不超 {PDF_LIMIT_MB}M 就行。
+    </p>
+
+    <h2>第四步：矫正与顺序</h2>
+    <ul>
+      <li><strong>拍歪了要矫正</strong>：透视矫正能把梯形拉回矩形，否则系统可能识别不清文字。</li>
+      <li><strong>顺序与官方清单一致</strong>：对照《<a href="/material-checklist">报名材料清单</a>》的顺序排列，审核人员看起来最顺。</li>
+    </ul>
+
+    <h2>用「{BRAND}」打包的完整流程</h2>
+    <ol class="steps">
+      <li>微信搜索「{BRAND}」打开小程序，选择「材料打包」。</li>
+      <li>按官方清单顺序连续拍摄所有材料原件。</li>
+      <li>小程序自动识别边缘并矫正透视；可拖动调整拼页布局（1/2/4 格）。</li>
+      <li>逐张调画质，顶部实时显示估算的 PDF 总大小，确保 ≤ {PDF_LIMIT_MB}M。</li>
+      <li>预览无误后保存（此时收取 4.99 元），得到单个 PDF 文件上传报名系统。</li>
+    </ol>
+
+    <p>
+      不确定要准备哪些材料？对照《<a href="/material-checklist">{BRAND} 报名材料清单</a>》逐项勾选。
+      如果之前被驳回过，先看《<a href="/reject-checklist">常见驳回原因自查表</a>》。
+    </p>
+  </div>
+
+  <FaqSection faqs={faqs} />
+</BaseLayout>

@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { BRAND, CONTACT_EMAIL, OFFICIAL_NAME, OFFICIAL_URL } from '../config/site.js'
+
+const title = `关于我们 - ${BRAND}`
+const description = `${BRAND}是一款专注于公务员考试报名材料处理的微信小程序，包含证件照处理与材料PDF打包两个功能。`
+---
+
+<BaseLayout title={title} description={description} path="/about">
+  <div class="article-head">
+    <h1>关于「{BRAND}」</h1>
+  </div>
+
+  <div class="prose">
+    <h2>产品定位</h2>
+    <p>
+      「{BRAND}」是一款专注于<strong>公务员考试报名材料处理</strong>的微信小程序，
+      包含两个功能：
+    </p>
+    <ul>
+      <li><strong>证件照处理</strong>：把手机照片裁成二寸 34×45mm、压到 35–100KB、可换白/蓝/红底（免费）。</li>
+      <li><strong>附件材料打包</strong>：多张材料照片自动裁边矫正、拼页、合成单个 ≤3M 的 PDF（4.99 元，仅保存时付费）。</li>
+    </ul>
+    <p>
+      最大差异化卖点：<strong>全程在用户手机本地处理，照片不上传服务器，只读不传。</strong>
+    </p>
+
+    <h2>免责声明</h2>
+    <div class="callout">
+      <p>
+        本站为第三方工具，与公务员主管部门无任何隶属或授权关系。
+        材料要求以《{OFFICIAL_NAME}》的官方公告为准：
+        <a href={OFFICIAL_URL} target="_blank" rel="noopener">{OFFICIAL_URL}</a>
+      </p>
+    </div>
+
+    <h2>联系方式</h2>
+    <p>
+      {CONTACT_EMAIL
+        ? `邮箱：${CONTACT_EMAIL}`
+        : '邮箱：待填写（上线前补充）'}
+    </p>
+    <p>
+      反馈问题或建议，也可在小程序内留言。
+    </p>
+
+    <h2>相关页面</h2>
+    <ul>
+      <li><a href="/jingkao-idphoto-spec">京考报名照片规格详解</a></li>
+      <li><a href="/material-checklist">报名材料清单</a></li>
+      <li><a href="/privacy">隐私说明</a></li>
+    </ul>
+  </div>
+</BaseLayout>
