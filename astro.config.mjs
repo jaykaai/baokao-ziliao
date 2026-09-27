@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config'
 
 // 站点域名。上线前请在 src/config/site.js 中把 DOMAIN 改成真实域名，
 // 并同步更新此处的 site（canonical 依赖它）与 public/sitemap.xml / public/robots.txt。
-const SITE = 'https://example.com'
+const SITE = 'https://jaykaai.github.io/baokao-ziliao'
 
 export default defineConfig({
   site: SITE,
