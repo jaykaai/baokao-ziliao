@@ -14,7 +14,7 @@ export const MINI_PROGRAM_NAME = BRAND
 
 // 上线域名（canonical / OG / sitemap 都依赖它）
 // 注意：astro.config.mjs 里的 site 字段也要同步改成同一个值
-export const DOMAIN = 'https://jaykaai.github.io/baokao-ziliao'
+export const DOMAIN = 'https://www.jiyou.site'
 
 // ICP 备案号（备案完成后填入；上线前页脚必须有）
 export const ICP = ''
