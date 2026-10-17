@@ -15,3 +15,6 @@ yarn-error.log*
 
 # Astro
 .astro/
+
+# WorkBuddy 工作区数据
+.workbuddy/

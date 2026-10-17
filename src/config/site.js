@@ -23,8 +23,8 @@ export const ICP = ''
 export const CONTACT_EMAIL = ''
 
 // 小程序码图片路径（MP 后台生成「无限码」，路径 /pages/index/index，建议 400px）
-// 放在 public/qrcode.png，上线前替换为正式码（不要用开发工具临时码）
-export const QRCODE_PATH = '/qrcode.png'
+// 放在 public/qrcode.jpg，上线前替换为正式码（不要用开发工具临时码）
+export const QRCODE_PATH = '/qrcode.jpg'
 
 // OG 分享图路径（建议 1200×630）
 export const OG_IMAGE = '/og-image.png'
